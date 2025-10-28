@@ -3,13 +3,32 @@ import { HydratedDocument } from 'mongoose';
 
 export type ProductDocument = HydratedDocument<Product>;
 
+export enum Category {
+  ELECTRONICS = 'Electronics',
+  FURNITURE = 'Furniture',
+  CLOTHING = 'Clothing',
+  FOOD = 'Food',
+  TOYS = 'Toys',
+  BOOKS = 'Books',
+  BEAUTY = 'Beauty',
+  SPORTS = 'Sports',
+  AUTOMOTIVE = 'Automotive',
+  OTHER = 'Other',
+}
+
+export enum ProductStatus {
+  ACTIVE = 'Active',
+  RESTOCK = 'Restock',
+  DISCONTINUED = 'Discontinued',
+}
+
 @Schema({ timestamps: true })
 export class Product {
   @Prop({ required: true })
   id: number; // change to UUID later!!!
 
   @Prop()
-  serialNumber: string; // also used as SKU
+  serialNumber_SKU: string;
 
   @Prop({ required: true })
   EANCode: string;
@@ -18,10 +37,10 @@ export class Product {
   name: string;
 
   @Prop()
-  category: Array<string>; // change to enum later!!!
+  category: Category;
 
   @Prop()
-  subcategory: string;
+  subcategory?: string;
 
   @Prop({ required: true })
   brand: string;
@@ -30,7 +49,7 @@ export class Product {
   model: string;
 
   @Prop()
-  description: string;
+  description?: string;
 
   @Prop()
   dimensions: {
@@ -44,13 +63,22 @@ export class Product {
   @Prop({ required: true })
   stock: {
     location: string;
-    productStatus: string; // change to enum later!!!
+    productStatus: ProductStatus;
     expiryDate: Date;
-    manufactureDate: Date;
+    manufactureDate?: Date;
     available: number;
     reserved: number;
     min: number;
     max: number;
+  };
+
+  @Prop({ required: true })
+  value: {
+    cost: number;
+    price: number;
+    currency?: string;
+    taxes: Array<string>;
+    refundable: boolean;
   };
 }
 
