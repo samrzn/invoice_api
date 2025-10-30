@@ -5,9 +5,9 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
-import { InvoicesModule } from './invoices/invoices.module';
-import { OrdersModule } from './orders/orders.module';
-import { ProductsModule } from './products/products.module';
+import { InvoicesModule } from './entities/invoices/invoices.module';
+import { OrdersModule } from './entities/orders/orders.module';
+import { ProductsModule } from './entities/products/products.module';
 
 @Module({
   imports: [
