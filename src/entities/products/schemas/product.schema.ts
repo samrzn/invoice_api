@@ -172,10 +172,10 @@ export class Product {
   @Prop({ required: true, type: DetailsSchema })
   details: Details;
 
-  @Prop({ type: [Object], default: [] })
+  @Prop({ type: [Object] })
   images?: object[];
 
-  @Prop({ type: [String], default: [] })
+  @Prop({ type: [String] })
   tags: string[];
 
   @Prop({ required: true, enum: Object.values(Availability) })
