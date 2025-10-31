@@ -1,6 +1,7 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { Product } from './schemas/product.schema';
+import { CreateProductDto } from './dto/create-product.dto';
 
 @Controller('products')
 export class ProductsController {
@@ -11,7 +12,7 @@ export class ProductsController {
     return this.productsService.findAll();
   }
 
-  /* @Post()
+  /*  @Post()
   async createProduct(
     @Body() createProductDto: CreateProductDto,
   ): Promise<Product> {
@@ -19,7 +20,7 @@ export class ProductsController {
   } */
 
   @Post()
-  async createProduct(@Body() product: Product): Promise<Product> {
+  async createProduct(@Body() product: CreateProductDto): Promise<Product> {
     return this.productsService.create(product);
   }
 }
