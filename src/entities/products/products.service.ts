@@ -10,10 +10,15 @@ export class ProductsService {
     private productModel: Model<ProductDocument>,
   ) {}
 
-  /*   async create(createProductDto: CreateProductDto): Promise<Product> {
-    const createdProduct = new this.productModel(createProductDto);
-    return createdProduct.save();
+  /*  async create(createProductDto: CreateProductDto): Promise<Product> {
+    const res = await this.productModel.create(createProductDto);
+    return res;
   } */
+
+  async create(product: Product): Promise<Product> {
+    const res = new this.productModel(product);
+    return res.save();
+  }
 
   async findAll(): Promise<Product[]> {
     const products = await this.productModel.find().exec();
