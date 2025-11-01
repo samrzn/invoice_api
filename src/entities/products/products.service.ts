@@ -11,18 +11,13 @@ export class ProductsService {
     private productModel: Model<ProductDocument>,
   ) {}
 
-  /*   async create(createProductDto: CreateProductDto): Promise<Product> {
-    const res = await this.productModel.create(createProductDto);
+  async create(productDto: CreateProductDto): Promise<ProductDocument> {
+    const res = await this.productModel.create(productDto);
     return res;
-  } */
-
-  async create(product: CreateProductDto): Promise<ProductDocument> {
-    const res = new this.productModel(product);
-    return res.save();
   }
 
   async findAll(): Promise<Product[]> {
-    const products = await this.productModel.find().exec();
+    const products = await this.productModel.find().lean().exec();
     return products;
   }
 }
