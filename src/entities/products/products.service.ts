@@ -20,4 +20,13 @@ export class ProductsService {
     const products = await this.productModel.find().lean().exec();
     return products;
   }
+
+  async findOne(product_id: string): Promise<Product> {
+    const product = await this.productModel.findById(product_id).exec();
+
+    if (!product) {
+      throw new Error('Product not found');
+    }
+    return product;
+  }
 }
