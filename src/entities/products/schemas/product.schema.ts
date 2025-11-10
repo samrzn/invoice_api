@@ -4,8 +4,6 @@ import { HydratedDocument } from 'mongoose';
 /* import * as mongoose from 'mongoose';
 import { Order } from '../orders/schemas/order.schema'; */ // To be implemented later
 
-export type ProductDocument = HydratedDocument<Product>;
-
 export enum Availability {
   AVAILABLE = 'Available',
   PRE_ORDER = 'Pre-order',
@@ -133,7 +131,7 @@ export const ValueSchema = SchemaFactory.createForClass(Value);
 
 @Schema({ timestamps: true })
 export class Product {
-  @Prop({ required: true })
+  @Prop({ required: true, unique: true, index: true })
   product_id: string; // change to UUID later!!!
 
   @Prop()
@@ -182,4 +180,5 @@ export class Product {
   availability: Availability;
 }
 
+export type ProductDocument = HydratedDocument<Product>;
 export const ProductSchema = SchemaFactory.createForClass(Product);
