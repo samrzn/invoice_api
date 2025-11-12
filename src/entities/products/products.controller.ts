@@ -1,11 +1,19 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  NotFoundException,
+  Param,
+  Post,
+  Put,
+} from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { Product, ProductDocument } from './schemas/product.schema';
 import { CreateProductDto } from './dto/create-product.dto';
 
 @Controller('products')
 export class ProductsController {
-  constructor(private productsService: ProductsService) {}
+  constructor(private readonly productsService: ProductsService) {}
 
   @Get('all')
   async findAllProducts(): Promise<Product[]> {
@@ -29,5 +37,20 @@ export class ProductsController {
     @Body() productDto: CreateProductDto,
   ): Promise<ProductDocument> {
     return this.productsService.create(productDto);
+  }
+
+  @Put('/id/:id')
+  async updateProduct(
+    @Param('id') id: string,
+    @Body() productDto: Product /* : UpdateProductDto */,
+  ): Promise<ProductDocument> {
+    await this.productsService.findById(id);
+    const res = await this.productsService.updateProduct(id, productDto);
+
+    if (!res) {
+      throw new NotFoundException(`Product ${id} not found`);
+    }
+
+    return res;
   }
 }

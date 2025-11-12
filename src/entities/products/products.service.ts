@@ -8,7 +8,7 @@ import { CreateProductDto } from './dto/create-product.dto';
 export class ProductsService {
   constructor(
     @InjectModel(Product.name)
-    private productModel: mongoose.Model<ProductDocument>,
+    private readonly productModel: mongoose.Model<ProductDocument>,
   ) {}
 
   async create(productDto: CreateProductDto): Promise<ProductDocument> {
@@ -38,5 +38,16 @@ export class ProductsService {
       throw new NotFoundException('Product not found');
     }
     return product;
+  }
+
+  async updateProduct(
+    id: string,
+    productDto: Product /* : UpdateProductDto */,
+  ): Promise<ProductDocument | null> {
+    const updated = await this.productModel.findByIdAndUpdate(id, productDto, {
+      new: true,
+      runValidators: true,
+    });
+    return updated ? updated.toObject() : null;
   }
 }
