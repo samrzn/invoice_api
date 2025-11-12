@@ -10,6 +10,7 @@ import {
 import { ProductsService } from './products.service';
 import { Product, ProductDocument } from './schemas/product.schema';
 import { CreateProductDto } from './dto/create-product.dto';
+import { UpdateProductDto } from './dto/update-product.dto';
 
 @Controller('products')
 export class ProductsController {
@@ -42,7 +43,7 @@ export class ProductsController {
   @Put('/id/:id')
   async updateProduct(
     @Param('id') id: string,
-    @Body() productDto: Product /* : UpdateProductDto */,
+    @Body() productDto: UpdateProductDto,
   ): Promise<ProductDocument> {
     await this.productsService.findById(id);
     const res = await this.productsService.updateProduct(id, productDto);
