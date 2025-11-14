@@ -20,7 +20,7 @@ export class ProductsService {
   async findAll(query: Query): Promise<Product[]> {
     const keyword = query.keyword
       ? {
-          category: { $regex: query.keyword, $options: 'i' },
+          name: { $regex: query.keyword, $options: 'i' },
         }
       : {};
     const products = await this.productModel
