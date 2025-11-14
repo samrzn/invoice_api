@@ -2,6 +2,7 @@ import * as mongoose from 'mongoose';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Product, ProductDocument } from './schemas/product.schema';
+import { Query } from 'express-serve-static-core';
 
 @Injectable()
 export class ProductsService {
@@ -16,8 +17,16 @@ export class ProductsService {
     return created;
   }
 
-  async findAll(): Promise<Product[]> {
-    const products = await this.productModel.find().lean().exec();
+  async findAll(query: Query): Promise<Product[]> {
+    const keyword = query.keyword
+      ? {
+          category: { $regex: query.keyword, $options: 'i' },
+        }
+      : {};
+    const products = await this.productModel
+      .find({ ...keyword })
+      .lean()
+      .exec();
     return products;
   }
 
