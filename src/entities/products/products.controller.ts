@@ -1,8 +1,9 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
-  NotFoundException,
+  // NotFoundException,
   Param,
   Post,
   Put,
@@ -40,18 +41,20 @@ export class ProductsController {
     return this.productsService.create(productDto);
   }
 
-  @Put('/id/:id')
+  @Put('/update/:id')
   async updateProduct(
     @Param('id') id: string,
     @Body() productDto: UpdateProductDto,
   ): Promise<ProductDocument> {
+    return this.productsService.updateProduct(id, productDto);
+  }
+
+  @Delete('/delete/:id')
+  async deleteProduct(@Param('id') id: string): Promise<{ deleted: boolean }> {
     await this.productsService.findById(id);
-    const res = await this.productsService.updateProduct(id, productDto);
 
-    if (!res) {
-      throw new NotFoundException(`Product ${id} not found`);
-    }
+    const res = await this.productsService.deleteProduct(id);
 
-    return res;
+    return res ? { deleted: true } : { deleted: false };
   }
 }

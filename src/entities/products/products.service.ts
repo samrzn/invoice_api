@@ -42,11 +42,20 @@ export class ProductsService {
   async updateProduct(
     id: string,
     product: Partial<Product>,
-  ): Promise<ProductDocument | null> {
+  ): Promise<ProductDocument> {
     const updated = await this.productModel.findByIdAndUpdate(id, product, {
       new: true,
       runValidators: true,
     });
-    return updated ? updated.toObject() : null;
+
+    if (!updated) {
+      throw new NotFoundException(`Product '${id}' not found`);
+    }
+
+    return updated.toObject();
+  }
+
+  async deleteProduct(id: string): Promise<ProductDocument | null> {
+    return await this.productModel.findByIdAndDelete(id);
   }
 }
