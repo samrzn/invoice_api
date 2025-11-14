@@ -8,25 +8,52 @@ import {
   Put,
   Query,
 } from '@nestjs/common';
-import { ApiTags, ApiResponse, ApiOperation } from '@nestjs/swagger';
-import type { Query as ExpressQuery } from 'express-serve-static-core';
+import {
+  ApiTags,
+  ApiResponse,
+  ApiOperation,
+  ApiQuery,
+  ApiOkResponse,
+} from '@nestjs/swagger';
 import { ProductsService } from './products.service';
 import { Product, ProductDocument } from './schemas/product.schema';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
+import { GetProductsQuery } from './dto/get-products.query';
+import { PaginatedResponse } from 'src/common/pagination/paginated.response';
 
 @ApiTags('Products')
 @Controller('products')
 export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
 
+  @ApiQuery({
+    name: 'keyword',
+    required: false,
+    type: String,
+    description: 'Search keyword',
+  })
+  @ApiQuery({
+    name: 'page',
+    required: false,
+    type: Number,
+    description: 'Page number',
+  })
+  @ApiQuery({
+    name: 'limit',
+    required: false,
+    type: Number,
+    description: 'Items per page',
+  })
   @Get('all')
   @ApiOperation({ summary: 'List all products' })
-  @ApiResponse({
-    status: 200,
+  @ApiOkResponse({
     description: 'List of products returned successfully',
+    type: PaginatedResponse<Product>,
   })
-  async findAllProducts(@Query() query: ExpressQuery): Promise<Product[]> {
+  async findAllProducts(
+    @Query() query: GetProductsQuery,
+  ): Promise<PaginatedResponse<Product>> {
     return this.productsService.findAll(query);
   }
 

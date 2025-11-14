@@ -2,7 +2,8 @@ import * as mongoose from 'mongoose';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Product, ProductDocument } from './schemas/product.schema';
-import { Query } from 'express-serve-static-core';
+import { GetProductsQuery } from './dto/get-products.query';
+import { PaginatedResponse } from 'src/common/pagination/paginated.response';
 
 @Injectable()
 export class ProductsService {
@@ -17,17 +18,33 @@ export class ProductsService {
     return created;
   }
 
-  async findAll(query: Query): Promise<Product[]> {
-    const keyword = query.keyword
-      ? {
-          name: { $regex: query.keyword, $options: 'i' },
-        }
-      : {};
-    const products = await this.productModel
-      .find({ ...keyword })
-      .lean()
-      .exec();
-    return products;
+  async findAll(query: GetProductsQuery): Promise<PaginatedResponse<Product>> {
+    const keyword = query.keyword?.trim() ?? '';
+    const page = Number(query.page) > 0 ? Number(query.page) : 1;
+    const limit = Number(query.limit) > 0 ? Number(query.limit) : 10;
+
+    const filters: Record<string, any> = {};
+
+    if (keyword) {
+      filters.$or = [{ name: { $regex: keyword, $options: 'i' } }];
+    }
+
+    const skip = (page - 1) * limit;
+
+    const [products, total] = await Promise.all([
+      this.productModel.find(filters).skip(skip).limit(limit).lean().exec(),
+      this.productModel.countDocuments(filters).exec(),
+    ]);
+
+    return {
+      pagination: {
+        page,
+        limit,
+        total,
+        totalPages: Math.ceil(total / limit),
+      },
+      data: products,
+    };
   }
 
   async findProduct(productId: string): Promise<Product> {
