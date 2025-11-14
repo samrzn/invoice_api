@@ -3,7 +3,6 @@ import {
   Controller,
   Delete,
   Get,
-  // NotFoundException,
   Param,
   Post,
   Put,
@@ -50,11 +49,7 @@ export class ProductsController {
   }
 
   @Delete('/delete/:id')
-  async deleteProduct(@Param('id') id: string): Promise<{ deleted: boolean }> {
-    await this.productsService.findById(id);
-
-    const res = await this.productsService.deleteProduct(id);
-
-    return res ? { deleted: true } : { deleted: false };
+  async deleteProduct(@Param('id') id: string) {
+    return this.productsService.deleteProduct(id);
   }
 }
