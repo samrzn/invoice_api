@@ -98,8 +98,8 @@ export const DimensionsSchema = SchemaFactory.createForClass(Dimensions);
 @Schema()
 export class Stock {
   @ApiProperty({ example: 'A-03-B' })
-  @Prop()
-  location: string;
+  @Prop({ required: false })
+  location?: string;
 
   @ApiProperty({ enum: ProductStatus, example: ProductStatus.ACTIVE })
   @Prop({ required: true, enum: Object.values(ProductStatus) })
