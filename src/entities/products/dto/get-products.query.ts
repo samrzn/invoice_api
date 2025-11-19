@@ -4,7 +4,6 @@ export class GetProductsQuery {
   @ApiPropertyOptional({
     type: String,
     description: 'Search keyword "name" to filter products',
-    example: 'Notebook',
   })
   keyword?: string;
 
