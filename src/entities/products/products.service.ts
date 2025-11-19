@@ -1,12 +1,15 @@
 import * as mongoose from 'mongoose';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
+import { ValidatedResponse } from 'src/common/validator/validated.response';
 import { Product, ProductDocument } from './schemas/product.schema';
 import { GetProductsQuery } from './dto/get-products.query';
 import { PaginatedResponse } from 'src/common/pagination/paginated.response';
 
 @Injectable()
 export class ProductsService {
+  private readonly validator = new ValidatedResponse();
+
   constructor(
     @InjectModel(Product.name)
     private readonly productModel: mongoose.Model<ProductDocument>,
@@ -48,6 +51,8 @@ export class ProductsService {
   }
 
   async findProduct(productId: string): Promise<Product> {
+    this.validator.validateUUID(productId);
+
     const product = await this.productModel.findOne({ product_id: productId });
 
     if (!product) {
@@ -57,6 +62,8 @@ export class ProductsService {
   }
 
   async findById(id: string): Promise<Product> {
+    this.validator.validateId(id);
+
     const product = await this.productModel.findById(id);
 
     if (!product) {
@@ -69,6 +76,8 @@ export class ProductsService {
     id: string,
     product: Partial<Product>,
   ): Promise<ProductDocument> {
+    this.validator.validateId(id);
+
     const updated = await this.productModel.findByIdAndUpdate(id, product, {
       new: true,
       runValidators: true,
