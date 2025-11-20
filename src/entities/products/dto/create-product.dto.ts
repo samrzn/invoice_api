@@ -12,11 +12,12 @@ import {
 
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
-import { Availability, Category } from '../../products/schemas/product.schema';
 import { DimensionsDto } from './dimensions.dto';
 import { StockDto } from './stock.dto';
 import { ValueDto } from './value.dto';
 import { DetailsDto } from './details.dto';
+import { AvailabilityEnum } from 'src/common/enums/availability.enum';
+import { CategoryEnum } from 'src/common/enums/category.enum';
 
 export class CreateProductDto {
   @ApiProperty({ example: 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11' })
@@ -40,12 +41,12 @@ export class CreateProductDto {
   readonly name: string;
 
   @ApiProperty({
-    enum: Category,
-    example: Category.ELECTRONICS,
+    enum: CategoryEnum,
+    example: CategoryEnum.ELECTRONICS,
   })
   @IsNotEmpty()
-  @IsEnum(Category)
-  readonly category: Category;
+  @IsEnum(CategoryEnum)
+  readonly category: CategoryEnum;
 
   @ApiPropertyOptional({ example: 'Ultrabook' })
   @IsOptional()
@@ -113,10 +114,10 @@ export class CreateProductDto {
   readonly tags: string[];
 
   @ApiProperty({
-    enum: Availability,
-    example: Availability.AVAILABLE,
+    enum: AvailabilityEnum,
+    example: AvailabilityEnum.AVAILABLE,
   })
   @IsNotEmpty()
-  @IsEnum(Availability)
-  readonly availability: Availability;
+  @IsEnum(AvailabilityEnum)
+  readonly availability: AvailabilityEnum;
 }

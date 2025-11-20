@@ -7,7 +7,7 @@ import {
   IsOptional,
   IsString,
 } from 'class-validator';
-import { ProductStatus } from '../../products/schemas/product.schema';
+import { ProductStatusEnum } from 'src/common/enums/product-status.enum';
 
 export class StockDto {
   @ApiProperty({ example: 'A-03-B' })
@@ -15,10 +15,10 @@ export class StockDto {
   @IsOptional()
   location?: string;
 
-  @ApiProperty({ enum: ProductStatus })
+  @ApiProperty({ enum: ProductStatusEnum, example: ProductStatusEnum.ACTIVE })
   @IsNotEmpty()
-  @IsEnum(ProductStatus)
-  productStatus: ProductStatus;
+  @IsEnum(ProductStatusEnum)
+  productStatus: ProductStatusEnum;
 
   @ApiProperty({ example: '2027-12-31T00:00:00.000Z' })
   @IsNotEmpty()

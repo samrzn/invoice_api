@@ -10,11 +10,11 @@ import {
 
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
-import { Availability } from '../schemas/product.schema';
 import { DetailsDto } from './details.dto';
 import { DimensionsDto } from './dimensions.dto';
 import { StockDto } from './stock.dto';
 import { ValueDto } from './value.dto';
+import { AvailabilityEnum } from 'src/common/enums/availability.enum';
 
 export class UpdateProductDto {
   @ApiPropertyOptional({ example: 'SN-ABC789' })
@@ -83,10 +83,10 @@ export class UpdateProductDto {
   readonly tags: string[];
 
   @ApiProperty({
-    enum: Availability,
-    example: Availability.AVAILABLE,
+    enum: AvailabilityEnum,
+    example: AvailabilityEnum.AVAILABLE,
   })
   @IsOptional()
-  @IsEnum(Availability)
-  readonly availability: Availability;
+  @IsEnum(AvailabilityEnum)
+  readonly availability: AvailabilityEnum;
 }

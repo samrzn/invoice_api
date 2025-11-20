@@ -1,39 +1,13 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
 import { ApiProperty } from '@nestjs/swagger';
+import { ManufactureOriginEnum } from 'src/common/enums/manufacture-origin.enum';
+import { ProductStatusEnum } from 'src/common/enums/product-status.enum';
+import { CategoryEnum } from 'src/common/enums/category.enum';
+import { AvailabilityEnum } from 'src/common/enums/availability.enum';
 
 /* import * as mongoose from 'mongoose';
 import { Order } from '../orders/schemas/order.schema'; */ // To be implemented later
-
-export enum Availability {
-  AVAILABLE = 'Available',
-  PRE_ORDER = 'Pre-order',
-  UNAVAILABLE = 'Unavailable',
-}
-
-export enum Category {
-  ELECTRONICS = 'Electronics',
-  FURNITURE = 'Furniture',
-  CLOTHING = 'Clothing',
-  FOOD = 'Food',
-  TOYS = 'Toys',
-  BOOKS = 'Books',
-  BEAUTY = 'Beauty',
-  SPORTS = 'Sports',
-  AUTOMOTIVE = 'Automotive',
-  OTHER = 'Other',
-}
-
-export enum ManufactureOrigin {
-  NATIONAL = 'National',
-  IMPORTED = 'Imported',
-}
-
-export enum ProductStatus {
-  ACTIVE = 'Active',
-  RESTOCK = 'Restock',
-  DISCONTINUED = 'Discontinued',
-}
 
 @Schema()
 export class Details {
@@ -49,9 +23,12 @@ export class Details {
   @Prop({ required: true })
   lastOut: Date;
 
-  @ApiProperty({ enum: ManufactureOrigin, example: ManufactureOrigin.IMPORTED })
-  @Prop({ required: true, enum: Object.values(ManufactureOrigin) })
-  manufactureOrigin: ManufactureOrigin;
+  @ApiProperty({
+    enum: ManufactureOriginEnum,
+    example: ManufactureOriginEnum.IMPORTED,
+  })
+  @Prop({ required: true, enum: Object.values(ManufactureOriginEnum) })
+  manufactureOrigin: ManufactureOriginEnum;
 
   @ApiProperty({ example: 'LCH-2025-078' })
   @Prop({ required: true })
@@ -101,9 +78,9 @@ export class Stock {
   @Prop({ required: false })
   location?: string;
 
-  @ApiProperty({ enum: ProductStatus, example: ProductStatus.ACTIVE })
-  @Prop({ required: true, enum: Object.values(ProductStatus) })
-  productStatus: ProductStatus;
+  @ApiProperty({ enum: ProductStatusEnum, example: ProductStatusEnum.ACTIVE })
+  @Prop({ required: true, enum: Object.values(ProductStatusEnum) })
+  productStatus: ProductStatusEnum;
 
   @ApiProperty({ example: '2027-12-31T00:00:00.000Z' })
   @Prop({ required: true })
@@ -174,11 +151,11 @@ export class Product {
   name: string;
 
   @ApiProperty({
-    enum: Category,
-    example: Category.ELECTRONICS,
+    enum: CategoryEnum,
+    example: CategoryEnum.ELECTRONICS,
   })
-  @Prop({ enum: Object.values(Category) })
-  category: Category;
+  @Prop({ enum: Object.values(CategoryEnum) })
+  category: CategoryEnum;
 
   @ApiProperty({ example: 'Laptops', required: false })
   @Prop()
@@ -223,9 +200,9 @@ export class Product {
   @Prop({ type: [String], default: [] })
   tags: string[];
 
-  @ApiProperty({ enum: Availability, example: Availability.AVAILABLE })
-  @Prop({ required: true, enum: Object.values(Availability) })
-  availability: Availability;
+  @ApiProperty({ enum: AvailabilityEnum, example: AvailabilityEnum.AVAILABLE })
+  @Prop({ required: true, enum: Object.values(AvailabilityEnum) })
+  availability: AvailabilityEnum;
 }
 
 export type ProductDocument = HydratedDocument<Product>;

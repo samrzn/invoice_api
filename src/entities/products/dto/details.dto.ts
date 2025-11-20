@@ -8,7 +8,7 @@ import {
   IsOptional,
   IsString,
 } from 'class-validator';
-import { ManufactureOrigin } from '../../products/schemas/product.schema';
+import { ManufactureOriginEnum } from 'src/common/enums/manufacture-origin.enum';
 
 export class DetailsDto {
   @ApiProperty({ example: 'TechMaster Importações LTDA' })
@@ -26,10 +26,13 @@ export class DetailsDto {
   @IsDateString()
   lastOut: Date;
 
-  @ApiProperty({ enum: ManufactureOrigin })
+  @ApiProperty({
+    enum: ManufactureOriginEnum,
+    example: ManufactureOriginEnum.IMPORTED,
+  })
   @IsNotEmpty()
-  @IsEnum(ManufactureOrigin)
-  manufactureOrigin: ManufactureOrigin;
+  @IsEnum(ManufactureOriginEnum)
+  manufactureOrigin: ManufactureOriginEnum;
 
   @ApiProperty({ example: 'LCH-2025-078' })
   @IsNotEmpty()
