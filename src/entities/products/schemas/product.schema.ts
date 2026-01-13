@@ -6,9 +6,6 @@ import { ProductStatusEnum } from 'src/common/enums/product-status.enum';
 import { CategoryEnum } from 'src/common/enums/category.enum';
 import { AvailabilityEnum } from 'src/common/enums/availability.enum';
 
-/* import * as mongoose from 'mongoose';
-import { Order } from '../orders/schemas/order.schema'; */ // To be implemented later
-
 @Schema()
 export class Details {
   @ApiProperty({ example: 'TechMaster Importações LTDA' })
@@ -41,10 +38,6 @@ export class Details {
   @ApiProperty({ example: ['NBK001', 'NBK002'] })
   @Prop({ required: true, type: [String], default: [] })
   skuInStock: string[];
-
-  /* @Prop
-  ({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Order' }] })
-  orders_id: Order[] | null; */ // To be implemented later
 }
 export const DetailsSchema = SchemaFactory.createForClass(Details);
 
