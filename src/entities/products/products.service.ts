@@ -8,11 +8,10 @@ import { PaginatedResponse } from 'src/common/pagination/paginated.response';
 
 @Injectable()
 export class ProductsService {
-  private readonly validator = new ValidatedResponse();
-
   constructor(
     @InjectModel(Product.name)
     private readonly productModel: mongoose.Model<ProductDocument>,
+    private readonly validator: ValidatedResponse,
   ) {}
 
   async create(product: Product): Promise<ProductDocument> {
